@@ -1,53 +1,53 @@
 import React, { useState } from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel } from "@mui/material";
+import SelectData from "./SelectData";
 
 function Form() {
 
-    const [region, setRegion] = useState("bio-bio");
-    const [provincia, setProvincia] = useState("concepcion");
-    const [ciudad, setCiudad] = useState("san-pedro-de-la-paz");
+    const [region, setRegion] = useState([{ id: 1, name: "Bío-Bío" }]);
+    const [provincia, setProvincia] = useState([{ id: 1, name: "Concepción" }]);
+    const [ciudad, setCiudad] = useState([{ id: 1, name: "San Pedro de la Paz" }, { id: 2, name: "Lomas Coloradas" }]);
 
     return (
         <div>
             {/* REGIONES */}
             <FormControl fullWidth>
                 <InputLabel id="region-label">Region</InputLabel>
-                <Select
+                <SelectData
                     labelId="region-label"
                     id="region-select"
-                    value={region}
+                    value={region[0].id}
                     label="Region"
-                // onChange={handleChange}
-                >
-                    <MenuItem value="bio-bio">Bío-Bío</MenuItem>
-                </Select>
+                    items={region}
+                />
             </FormControl>
+            <br />
+            <br />
             {/* PROVINCIAS */}
             <FormControl fullWidth>
                 <InputLabel id="provincia-label">Provincia</InputLabel>
-                <Select
+                <SelectData
                     labelId="provincia-label"
                     id="provincia-select"
-                    value={provincia}
-                    label="Region"
-                // onChange={handleChange}
-                >
-                    <MenuItem value="concepcion">Concepción</MenuItem>
-                </Select>
+                    value={provincia[0].id}
+                    label="Provincia"
+                    items={provincia}
+                />
             </FormControl>
+            <br />
+            <br />
             {/* CIUDADES */}
             <FormControl fullWidth>
                 <InputLabel id="ciudad-label">Ciudad</InputLabel>
-                <Select
+                <SelectData
                     labelId="ciudad-label"
                     id="ciudad-select"
-                    value={ciudad}
+                    value={ciudad[0].id}
                     label="Ciudad"
-                // onChange={handleChange}
-                >
-                    <MenuItem value="san-pedro-de-la-paz">San Pedro de la Paz</MenuItem>
-                </Select>
+                    items={ciudad}
+                />
             </FormControl>
+            {/* DATA */}
         </div>
     );
 }
