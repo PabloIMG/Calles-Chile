@@ -5,7 +5,9 @@ function App() {
 	return (
 		<div className="App">
 			<h1>Calles Chile</h1>
-			<Form />
+			<div className='FormContainer'>
+				<Form />
+			</div>
 		</div>
 	);
 }
