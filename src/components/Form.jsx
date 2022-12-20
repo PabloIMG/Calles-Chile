@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormControl, InputLabel } from "@mui/material";
 import SelectData from "./SelectData";
+import api_URL from "../api/api";
+import axios from "axios";
 
 function Form() {
 
-    const [region, setRegion] = useState([{ id: 1, name: "Bío-Bío" }]);
-    const [provincia, setProvincia] = useState([{ id: 1, name: "Concepción" }]);
-    const [ciudad, setCiudad] = useState([{ id: 1, name: "San Pedro de la Paz" }, { id: 2, name: "Lomas Coloradas" }]);
+    const [region, setRegion] = useState([]);
+    const [provincia, setProvincia] = useState([{ id: 1, nombre: "Concepción" }]);
+    const [ciudad, setCiudad] = useState([{ id: 1, nombre: "San Pedro de la Paz" }, { id: 2, nombre: "Lomas Coloradas" }]);
+
+    useEffect(() => {
+        setData();
+    }, []);
+
+    //? Cargar info de la BD.
+    const setData = () => {
+        axios.get(api_URL + "/regiones")
+            .then((res) => {
+                setRegion(res?.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <div>
@@ -16,7 +33,7 @@ function Form() {
                 <SelectData
                     labelId="region-label"
                     id="region-select"
-                    value={region[0].id}
+                    value={""}
                     label="Region"
                     items={region}
                 />
@@ -29,7 +46,7 @@ function Form() {
                 <SelectData
                     labelId="provincia-label"
                     id="provincia-select"
-                    value={provincia[0].id}
+                    value={provincia[0]?.id}
                     label="Provincia"
                     items={provincia}
                 />
@@ -42,7 +59,7 @@ function Form() {
                 <SelectData
                     labelId="ciudad-label"
                     id="ciudad-select"
-                    value={ciudad[0].id}
+                    value={ciudad[0]?.id}
                     label="Ciudad"
                     items={ciudad}
                 />

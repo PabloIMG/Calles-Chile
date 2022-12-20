@@ -16,7 +16,7 @@ function SelectData(props) {
             onChange={(e) => setSelected(e.target.value)}
         >
             {items.map((item, index) => (
-                <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                <MenuItem key={index} value={item.id}>{item.nombre}</MenuItem>
             ))}
         </Select>
     );
