@@ -1,28 +1,81 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, InputLabel } from "@mui/material";
-import SelectData from "./SelectData";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import api_URL from "../api/api";
 import axios from "axios";
 
 function Form() {
 
-    const [region, setRegion] = useState([]);
-    const [provincia, setProvincia] = useState([{ id: 1, nombre: "Concepción" }]);
-    const [ciudad, setCiudad] = useState([{ id: 1, nombre: "San Pedro de la Paz" }, { id: 2, nombre: "Lomas Coloradas" }]);
+    //? Información de la BD.
+    const [regiones, setRegiones] = useState([]);
+    const [provincias, setProvincias] = useState([]);
+    const [ciudades, setCiudades] = useState([]);
+
+    //? Información seleccionada.
+    const [regionSeleccionada, setRegionSeleccionada] = useState("");
+    const [provinciaSeleccionada, setProvinciaSeleccionada] = useState("");
+    const [ciudadSeleccionada, setCiudadSeleccionada] = useState("");
 
     useEffect(() => {
         setData();
     }, []);
 
-    //? Cargar info de la BD.
+    //* .: Cargar info de la BD :. *//
     const setData = () => {
         axios.get(api_URL + "/regiones")
             .then((res) => {
-                setRegion(res?.data);
+                setRegiones(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
+    }
+
+    //* .: Modificar selectores :. *//
+    const onChange = (id, tipo) => {
+        let peticion = "";
+        //? Limpiar hooks.
+        if (tipo === "regiones") {
+            setProvincias([]);
+            setCiudades([]);
+            setProvinciaSeleccionada("");
+            setCiudadSeleccionada("");
+            peticion = "provincias";
+        }
+        else if (tipo === "provincias") {
+            setCiudades([]);
+            setCiudadSeleccionada("");
+            peticion = "ciudades";
+        }
+
+        //? Petición a la BD.
+        axios.get(api_URL + "/" + peticion + "/" + id)
+            .then((res) => {
+                if (tipo === "regiones") {
+                    setProvincias(res.data.provincias);
+                }
+                else if (tipo === "provincias") {
+                    setCiudades(res.data.ciudades);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    //* .: Listar items del selector :. *//
+    const listarItems = (items) => {
+        if (items.length > 0) {
+            return (
+                items.map((item, index) => (
+                    <MenuItem key={index} value={item.id}>{item.nombre}</MenuItem>
+                ))
+            )
+        }
+        else {
+            return (
+                <MenuItem value="">-</MenuItem>
+            )
+        }
     }
 
     return (
@@ -31,42 +84,44 @@ function Form() {
         >
             {/* REGIONES */}
             <FormControl fullWidth>
-                <InputLabel id="region-label">Region</InputLabel>
-                <SelectData
+                <InputLabel id="region-label">Región</InputLabel>
+                <Select
                     labelId="region-label"
-                    id="region-select"
-                    value={""}
-                    label="Region"
-                    items={region}
-                />
+                    id="region-label"
+                    value={regionSeleccionada}
+                    onChange={(e) => { setRegionSeleccionada(e.target.value); onChange(e.target.value, "regiones"); }}
+                >
+                    {regiones.map((item, index) => (
+                        <MenuItem key={index} value={item.id}>{item.nombre}</MenuItem>
+                    ))}
+                </Select>
             </FormControl>
-            <br />
             <br />
             {/* PROVINCIAS */}
             <FormControl fullWidth>
                 <InputLabel id="provincia-label">Provincia</InputLabel>
-                <SelectData
+                <Select
                     labelId="provincia-label"
-                    id="provincia-select"
-                    value={provincia[0]?.id}
-                    label="Provincia"
-                    items={provincia}
-                />
+                    id="provincia-label"
+                    value={provinciaSeleccionada}
+                    onChange={(e) => { setProvinciaSeleccionada(e.target.value); onChange(e.target.value, "provincias"); }}
+                >
+                    {listarItems(provincias)}
+                </Select>
             </FormControl>
-            <br />
             <br />
             {/* CIUDADES */}
             <FormControl fullWidth>
                 <InputLabel id="ciudad-label">Ciudad</InputLabel>
-                <SelectData
+                <Select
                     labelId="ciudad-label"
-                    id="ciudad-select"
-                    value={ciudad[0]?.id}
-                    label="Ciudad"
-                    items={ciudad}
-                />
+                    id="ciudad-label"
+                    value={ciudadSeleccionada}
+                    onChange={(e) => { setCiudadSeleccionada(e.target.value); }}
+                >
+                    {listarItems(ciudades)}
+                </Select>
             </FormControl>
-            {/* DATA */}
         </div>
     );
 }
