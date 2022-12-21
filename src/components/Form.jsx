@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import api_URL from "../api/api";
 import axios from "axios";
 
@@ -9,6 +9,7 @@ function Form() {
     const [regiones, setRegiones] = useState([]);
     const [provincias, setProvincias] = useState([]);
     const [ciudades, setCiudades] = useState([]);
+    const [calles, setCalles] = useState(["Calle 1", "Calle 2", "Calle 3"]);
 
     //? Información seleccionada.
     const [regionSeleccionada, setRegionSeleccionada] = useState("");
@@ -122,6 +123,30 @@ function Form() {
                     {listarItems(ciudades)}
                 </Select>
             </FormControl>
+            <br />
+            {/* CALLES */}
+            <TableContainer>
+                <Table>
+                    <TableHead
+                        style={{ backgroundColor: "#3f51b5" }}
+                    >
+                        <TableRow>
+                            <TableCell
+                                style={{ fontWeight: "bold", color: "#fff" }}
+                            >
+                                Nombre
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {calles.map((item, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{item}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
 }
