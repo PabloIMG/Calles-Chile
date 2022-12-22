@@ -119,7 +119,7 @@ function Form() {
                     id="provincia-label"
                     value={provinciaSeleccionada}
                     label="Provincia"
-                    disabled={provincias.length == 0}
+                    disabled={provincias.length === 0}
                     onChange={(e) => { setProvinciaSeleccionada(e.target.value); onChange(e.target.value, "provincias"); }}
                 >
                     {listarItems(provincias)}
@@ -135,7 +135,7 @@ function Form() {
                     id="ciudad-label"
                     value={ciudadSeleccionada}
                     label="Ciudad"
-                    disabled={ciudades.length == 0}
+                    disabled={ciudades.length === 0}
                     onChange={(e) => { setCiudadSeleccionada(e.target.value); onChange(e.target.value, "ciudades"); }}
                 >
                     {listarItems(ciudades)}
