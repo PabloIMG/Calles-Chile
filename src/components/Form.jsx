@@ -91,11 +91,11 @@ function Form() {
     }
 
     return (
-        <div
-            style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
-        >
-            {/* REGIONES */}
-            <FormControl fullWidth>
+        <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+            <FormControl
+                fullWidth
+                sx={{ m: 2 }}
+            >
                 <InputLabel id="demo-simple-select-label">Región</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -109,9 +109,10 @@ function Form() {
                     ))}
                 </Select>
             </FormControl>
-            <br />
-            {/* PROVINCIAS */}
-            <FormControl fullWidth>
+            <FormControl
+                fullWidth
+                sx={{ m: 2 }}
+            >
                 <InputLabel id="demo-simple-select-label">Provincia</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -124,9 +125,10 @@ function Form() {
                     {listarItems(provincias)}
                 </Select>
             </FormControl>
-            <br />
-            {/* CIUDADES */}
-            <FormControl fullWidth>
+            <FormControl
+                fullWidth
+                sx={{ m: 2 }}
+            >
                 <InputLabel id="demo-simple-select-label">Ciudad</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -139,8 +141,6 @@ function Form() {
                     {listarItems(ciudades)}
                 </Select>
             </FormControl>
-            <br />
-            {/* CALLES */}
             <TableContainer>
                 <Table>
                     <TableHead
