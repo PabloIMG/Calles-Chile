@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { FormControl, InputLabel, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import api_URL from "../api/api";
 import axios from "axios";
 
 function Form() {
@@ -9,12 +8,13 @@ function Form() {
     const [regiones, setRegiones] = useState([]);
     const [provincias, setProvincias] = useState([]);
     const [ciudades, setCiudades] = useState([]);
-    const [calles, setCalles] = useState(["Calle 1", "Calle 2", "Calle 3"]);
+    const [calles, setCalles] = useState([]);
 
     //? Información seleccionada.
     const [regionSeleccionada, setRegionSeleccionada] = useState("");
     const [provinciaSeleccionada, setProvinciaSeleccionada] = useState("");
     const [ciudadSeleccionada, setCiudadSeleccionada] = useState("");
+    const [calleSeleccionada, setCalleSeleccionada] = useState("");
 
     useEffect(() => {
         setData();
@@ -22,7 +22,7 @@ function Form() {
 
     //* .: Cargar info de la BD :. *//
     const setData = () => {
-        axios.get(api_URL + "/regiones")
+        axios.get(process.env.REACT_APP_API_URL + "/regiones")
             .then((res) => {
                 setRegiones(res.data);
             })
@@ -38,24 +38,35 @@ function Form() {
         if (tipo === "regiones") {
             setProvincias([]);
             setCiudades([]);
+            setCalles([]);
             setProvinciaSeleccionada("");
             setCiudadSeleccionada("");
             peticion = "provincias";
         }
-        else if (tipo === "provincias") {
+        if (tipo === "provincias") {
             setCiudades([]);
+            setCalles([]);
             setCiudadSeleccionada("");
             peticion = "ciudades";
         }
+        if (tipo === "ciudades") {
+            setCalles([]);
+            setCalleSeleccionada("");
+            peticion = "calles";
+        }
+
 
         //? Petición a la BD.
-        axios.get(api_URL + "/" + peticion + "/" + id)
+        axios.get(process.env.REACT_APP_API_URL + "/" + peticion + "/" + id)
             .then((res) => {
                 if (tipo === "regiones") {
                     setProvincias(res.data.provincias);
                 }
-                else if (tipo === "provincias") {
+                if (tipo === "provincias") {
                     setCiudades(res.data.ciudades);
+                }
+                if (tipo === "ciudades") {
+                    setCalles(res.data.calles);
                 }
             })
             .catch((err) => {
@@ -85,11 +96,12 @@ function Form() {
         >
             {/* REGIONES */}
             <FormControl fullWidth>
-                <InputLabel id="region-label">Región</InputLabel>
+                <InputLabel id="demo-simple-select-label">Región</InputLabel>
                 <Select
-                    labelId="region-label"
-                    id="region-label"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
                     value={regionSeleccionada}
+                    label="Región"
                     onChange={(e) => { setRegionSeleccionada(e.target.value); onChange(e.target.value, "regiones"); }}
                 >
                     {regiones.map((item, index) => (
@@ -100,11 +112,13 @@ function Form() {
             <br />
             {/* PROVINCIAS */}
             <FormControl fullWidth>
-                <InputLabel id="provincia-label">Provincia</InputLabel>
+                <InputLabel id="demo-simple-select-label">Provincia</InputLabel>
                 <Select
-                    labelId="provincia-label"
+                    labelId="demo-simple-select-label"
                     id="provincia-label"
                     value={provinciaSeleccionada}
+                    label="Provincia"
+                    disabled={provincias.length == 0}
                     onChange={(e) => { setProvinciaSeleccionada(e.target.value); onChange(e.target.value, "provincias"); }}
                 >
                     {listarItems(provincias)}
@@ -113,12 +127,14 @@ function Form() {
             <br />
             {/* CIUDADES */}
             <FormControl fullWidth>
-                <InputLabel id="ciudad-label">Ciudad</InputLabel>
+                <InputLabel id="demo-simple-select-label">Ciudad</InputLabel>
                 <Select
-                    labelId="ciudad-label"
+                    labelId="demo-simple-select-label"
                     id="ciudad-label"
                     value={ciudadSeleccionada}
-                    onChange={(e) => { setCiudadSeleccionada(e.target.value); }}
+                    label="Ciudad"
+                    disabled={ciudades.length == 0}
+                    onChange={(e) => { setCiudadSeleccionada(e.target.value); onChange(e.target.value, "ciudades"); }}
                 >
                     {listarItems(ciudades)}
                 </Select>
@@ -141,7 +157,7 @@ function Form() {
                     <TableBody>
                         {calles.map((item, index) => (
                             <TableRow key={index}>
-                                <TableCell>{item}</TableCell>
+                                <TableCell>{item.nombre}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
