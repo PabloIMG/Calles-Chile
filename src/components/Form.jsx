@@ -14,7 +14,6 @@ function Form() {
     const [regionSeleccionada, setRegionSeleccionada] = useState("");
     const [provinciaSeleccionada, setProvinciaSeleccionada] = useState("");
     const [ciudadSeleccionada, setCiudadSeleccionada] = useState("");
-    const [calleSeleccionada, setCalleSeleccionada] = useState("");
 
     useEffect(() => {
         setData();
@@ -51,7 +50,6 @@ function Form() {
         }
         if (tipo === "ciudades") {
             setCalles([]);
-            setCalleSeleccionada("");
             peticion = "calles";
         }
 
@@ -150,7 +148,7 @@ function Form() {
                             <TableCell
                                 style={{ fontWeight: "bold", color: "#fff" }}
                             >
-                                Nombre
+                                Listado de calles
                             </TableCell>
                         </TableRow>
                     </TableHead>
