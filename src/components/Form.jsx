@@ -53,7 +53,6 @@ function Form() {
             peticion = "calles";
         }
 
-
         //? Petición a la BD.
         axios.get(process.env.REACT_APP_API_URL + "/" + peticion + "/" + id)
             .then((res) => {
